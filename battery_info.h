@@ -1,7 +1,6 @@
-void charge_now();
-float charge_full();
-float charge_full_cap();
-void show_full_charge();
-void battery_health();
-void current_now();
+void charge_now(char* battery);
+float charge_full(char* battery);
+float charge_full_cap(char* battery);
+void show_full_charge(char* battery);
+void current_now(char* battery);
 

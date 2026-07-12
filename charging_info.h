@@ -1,6 +1,7 @@
-void charging();
+void charging(char* battery);
 void ac_connected();
-void capacity();
-void cycle_count();
+float capacity(char* battery);
+void show_capacity(char* battery);
+
 
 
