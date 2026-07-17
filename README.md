@@ -14,4 +14,5 @@ A simple command-line battery information tool written in C for Linux.
 ./batteryfetch
 
 #### Screenshot
-<img src="./screenshots/batteryfetch1.1.png">
+Batteryfetch v1.0.2
+<img src="./screenshots/batteryfetch1.0.2.png">
