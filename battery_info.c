@@ -1,73 +1,48 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "null.h"
+#include "utils.h"
 #include "colors.h"
 
 void charge_now(char* battery){
 	//Present electric charge of battery (in milliampere hours)
-	
-	FILE *fptr;
-	char path[256];
-
-	snprintf(path,sizeof(path),"/sys/class/power_supply/%s/charge_now",battery);
-
-	fptr = fopen(path,"r");
-	null_ptr(fptr);
-
+		
+	char* key = "charge_now";
 	int n = 15;
-	char str[n];
-
-	fgets(str,n,fptr);
+	char* str = fileread(battery,key,n);
 	float charge = atof(str);
 
 	printf(CYAN "Charge now: " RESET);
 	printf(BLUE "%.3f mAh\n" RESET,charge/1000);
 
-	fclose(fptr);
-	fptr = NULL;
+	free(str);
+	str = NULL;
 }
 
 float charge_full(char* battery){
 	//Present full charge of battery (in milliampere hours)
-
-	FILE *fptr;
-	char path[256];
-
-	snprintf(path,sizeof(path),"/sys/class/power_supply/%s/charge_full",battery);
-
-	fptr = fopen(path,"r");
-	null_ptr(fptr);
-
+	
+	char* key = "charge_full";
 	int n = 15;
-	char str[n];
-	fgets(str,n,fptr);
+	char* str = fileread(battery,key,n);
 	float charge_full = atof(str);
 	
-	fclose(fptr);
-	fptr = NULL;
+	free(str);
+	str = NULL;
 
 	return charge_full;
 }
 
 float charge_full_cap(char* battery){
 	//Full charge capacity of battery by design (in milliampere hours)
-
-	FILE *fptr;
-	char path[256];
-
-	snprintf(path,sizeof(path),"/sys/class/power_supply/%s/charge_full_design",battery);
-
-	fptr = fopen(path,"r");
-	null_ptr(fptr);
-
+	
+	char* key = "charge_full_design";
 	int n = 15;
-	char str[n];
-	fgets(str,n,fptr);
+	char* str = fileread(battery,key,n);
 	float charge_full_design = atof(str);
 
-	fclose(fptr);
-	fptr =  NULL;
+	free(str);
+	str =  NULL;
 
 	return charge_full_design;
 }
@@ -90,24 +65,16 @@ void show_full_charge(char* battery){
 void current_now(char* battery){
 	//Present electric current (in milliamphere)
 	
-	FILE *fptr;
-	char path[256];
-	
-	snprintf(path,sizeof(path),"/sys/class/power_supply/%s/current_now",battery);
-
-	fptr = fopen(path,"r");
-	null_ptr(fptr);
-
+	char* key = "current_now";
 	int n = 15;
-	char str[n];
-	fgets(str,n,fptr);
-	float charge = atof(str);
+	char* str = fileread(battery,key,n);
+	float current = atof(str);
 
 	printf(CYAN "Current: " RESET);
-	printf(BLUE "%.3f mA\n" RESET,charge/1000);
+	printf(BLUE "%.3f mA\n" RESET,current/1000);
 
-	fclose(fptr);
-	fptr = NULL;
+	free(str);
+	str = NULL;
 }
 
 

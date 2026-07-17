@@ -1,23 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "null.h"
+#include "utils.h"
 #include "colors.h"
 
 void charging(char* battery){
 	//Charging or discharging
-
-	FILE *fptr;
-	char path[256];
-
-	snprintf(path,sizeof(path),"/sys/class/power_supply/%s/status",battery);
-
-	fptr = fopen(path,"r");
-	null_ptr(fptr);
-
+	
+	char* key = "status";
 	int n = 9;
-	char str[n];
-	fgets(str,n,fptr);
+	char* str = fileread(battery,key,n);
 
 	printf(CYAN "Status: " RESET);
 
@@ -28,11 +20,10 @@ void charging(char* battery){
 		printf(RED "Discharging\n" RESET);
 	}
 
-	fclose(fptr);
-	fptr = NULL;
+	free(str);
 }
 
-void ac_connected(){
+int ac_connected(){
 	//If connected to AC (main)
 
 	FILE *fptr;
@@ -44,45 +35,50 @@ void ac_connected(){
 	int n = 2;
 	char str[n];
 	fgets(str,n,fptr);
-	int charging = atoi(str);
+	
+	if(str[0]=='\0'){
+		perror(RED "File is empty" RESET);
+	}
+
+	int status = atoi(str);
+
+	fclose(fptr);
+	fptr = NULL;
+	return status;
+}
+
+void show_ac_connected(){
+	//Show if plugged
+
+	int status = ac_connected();
 
 	printf(CYAN "AC: " RESET);
 
-	if(charging==0){
+	if(status==0){
 		printf(BLUE "Unplugged\n" RESET);
 	}
 	else{
 		printf(YELLOW "Plugged\n" RESET);
 	}
-
-	fclose(fptr);
-	fptr = NULL;
 }
 
 float capacity(char* battery){
-	//Present charge (percentage)
+	//Charge (percentage)
 	
-	FILE *fptr;
-	char path[256];
-	
-	snprintf(path,sizeof(path),"/sys/class/power_supply/%s/capacity",battery);
-
-	fptr = fopen(path,"r");
-	null_ptr(fptr);
-
+	char* key = "capacity";
 	int n = 4;
-	char str[n];
-	fgets(str,n,fptr);
-	float charge = atof(str);
+	char* str = fileread(battery,key,n);
+	float cap = atof(str);
 
-	fclose(fptr);
-	fptr = NULL;
+	free(str);
+	str = NULL;
 
-	return charge;
+	return cap;
 }
 
 
 void show_capacity(char* battery){
+	//Show charge (percentage)
 
 	float charge = capacity(battery);
 

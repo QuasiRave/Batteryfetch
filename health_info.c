@@ -1,23 +1,15 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "battery_info.h"
-#include "null.h"
+#include "utils.h"
 #include "colors.h"
 
 void cycle_count(char* battery){
 	//Number of battery charge cycles (0 if not supported)
-
-	FILE *fptr;
-	char path[256];
-
-	snprintf(path,sizeof(path),"/sys/class/power_supply/%s/cycle_count",battery);
-
-	fptr = fopen(path,"r");
-	null_ptr(fptr);
-
+	
+	char* key = "cycle_count";
 	int n = 4;
-	char str[n];
-	fgets(str,n,fptr);
+	char* str = fileread(battery,key,n);
 	int count = atoi(str);
 
 	printf(CYAN "Charge cycles: " RESET);
@@ -27,8 +19,8 @@ void cycle_count(char* battery){
 		printf(" (or not supported)\n");
 	}
 
-	fclose(fptr);
-	fptr = NULL;
+	free(str);
+	str = NULL;
 }
 
 float calculate_battery_health(char* battery){

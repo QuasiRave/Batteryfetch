@@ -3,7 +3,8 @@
 #include <dirent.h>
 #include <stdlib.h>
 #include <string.h>
-#include "null.h"
+#include "utils.h"
+#include "colors.h"
 
 int filetype(char type){
 	//Determining file type
@@ -31,7 +32,7 @@ char** list_batteries(){
 	struct dirent *dir;
 
 	if(dirptr==NULL){
-		perror("Couldn't access the file!");
+		perror(RED "Couldn't access the file!" RESET);
 		batteries[0] = NULL;
 		return batteries;
 	}

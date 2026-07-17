@@ -1,7 +1,5 @@
 #include <stdio.h>
-#include <stdlib.h>
 #include "charging_info.h"
-#include "null.h"
 #include "colors.h"
 
 
@@ -51,28 +49,11 @@ void show(float charge,int charging_status){
 	printf("\n");
 }
 
-int status(){
-	//Check if AC connected
-
-	FILE *fptr;
-	fptr = fopen("/sys/class/power_supply/AC/online","r");
-
-	int n = 2;
-	char str[n];
-	fgets(str,n,fptr);
-	int charging = atoi(str);
-
-	fclose(fptr);
-	fptr = NULL;
-
-	return charging;
-}
-
 void battery_charge(char* battery){
 
 	float charge = capacity(battery);
+	int charging_status = ac_connected();
 
-	int charging_status = status();
 	show(charge,charging_status);
 
 }
