@@ -8,7 +8,7 @@ A simple command-line battery information tool written in C for Linux.
 - Read information from '*/sys/class/power_supply*'
 
 ### Build
-*gcc main.c battery.c battery_info.c charging_info.c bat_ls.c health_info.c null.c -o batteryfetch*   
+*gcc main.c battery.c battery_info.c charging_info.c health_info.c bat_ls.c utils.c -o batteryfetch*   
 
 #### Usage
 ./batteryfetch
